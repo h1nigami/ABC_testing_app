@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import os
 
 def load_env() -> None:
@@ -18,3 +19,8 @@ def load_env() -> None:
 
     except FileNotFoundError:
         print("Warning: .env file not found. Skipping loading of environment variables.")
+
+@dataclass
+class Settings:
+    DSN = os.getenv("DSN")
+    TEST_DSN = "sqlite+aiosqlite:///test_db.db"
