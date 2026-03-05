@@ -1,6 +1,7 @@
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, join
+from sqlalchemy import select
 from app.models import Group, User
+from typing import List
 
 from .base import BaseRepository
 
@@ -12,7 +13,7 @@ class GroupRepository(BaseRepository[Group]):
         result = await self._session.execute(select(self._model).where(self._model.name == name))
         return result.scalar()
     
-    async def list_students(self, group: Group) -> list[User]:
-        query = select(User).join(Group).where(User.group_id == group.id)
+    async def list_students(self, group: Group) -> List[User]:
+        query = select(User).join(Group).where(User.group_id == group.Id)
         result = await self._session.execute(query)
         return result.scalars().all()

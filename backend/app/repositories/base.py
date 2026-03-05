@@ -14,18 +14,14 @@ class BaseRepository(Generic[ModelType]):
     async def create(self, **kwargs) -> ModelType:
         instance = self._model(**kwargs)
         self._session.add(instance)
-        await self._session.commit()
-        await self._session.refresh(instance)
         return instance
     
     async def delete(self, Id: int) -> None:
         await self._session.execute(sql_delete(self._model).where(self._model.Id == Id))
-        await self._session.commit()
 
     async def update(self, Id: int, **kwargs) -> ModelType:
         stmt = sql_update(self._model).where(self._model.Id == Id).values(**kwargs)
         await self._session.execute(stmt)
-        await self._session.commit()
         return await self.get(Id)
     
     async def list(self) -> List[ModelType]:
@@ -39,3 +35,6 @@ class BaseRepository(Generic[ModelType]):
     async def to_dict(self, model: ModelType) -> Dict[str, Any]:
         """Преобразование модели в словарь"""
         return {c.key: getattr(model, c.key) for c in class_mapper(model.__class__).mapped_table.c}
+    
+    async def save(self):
+        await self._session.commit()
