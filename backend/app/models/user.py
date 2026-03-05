@@ -34,5 +34,5 @@ class User(Base):
         "Group", back_populates="students"
     )
     def __repr__(self):
-        return f"<User(id={self.id}, email={self.email}, role={self.role})>"
+        return f"<User(id={self.Id}, login={self.login}, role={self.role})>"
 

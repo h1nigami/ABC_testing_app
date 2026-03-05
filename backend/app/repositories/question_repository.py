@@ -1,0 +1,7 @@
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.models import Question
+from .base import BaseRepository
+
+class QuestionRepository(BaseRepository[Question]):
+    def __init__(self, session: AsyncSession):
+        super().__init__(Question, session)
