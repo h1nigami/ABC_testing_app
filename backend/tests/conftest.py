@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import NullPool
 
-from app.models import Group, User
+from app.models import Group, User, Question, Test, TestAttempt, UserAnswer, AnswerOption
 from app.core.database import Base
 from app.core.config import Settings
 

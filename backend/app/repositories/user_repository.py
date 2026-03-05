@@ -13,4 +13,6 @@ class UserRepository(BaseRepository[User]):
         return result.scalar()
     
     async def add_to_group(self, user: User, group_id: int) -> None:
-        await self._session.execute(sql_update(self._model).where(self._model.Id == user.Id).values(group_id=group_id))
+        await self._session.execute(sql_update(self._model)
+                                    .where(self._model.Id == user.Id)
+                                    .values(group_id=group_id))
