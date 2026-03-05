@@ -3,5 +3,7 @@ from app.models import TestAttempt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 class TestAttemptRepository(BaseRepository[TestAttempt]):
-    def __init__(self, model, session: AsyncSession):
+    __test__ = False
+
+    def __init__(self, session: AsyncSession):
         super().__init__(TestAttempt ,session)

@@ -8,6 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 
 class TestRepository(BaseRepository[Test]):
+    __test__ = False
+    
     def __init__(self, session: AsyncSession):
         super().__init__(Test, session)
     
