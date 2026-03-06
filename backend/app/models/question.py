@@ -1,7 +1,8 @@
 from ..core.database import Base
-from sqlalchemy import Integer, Float, Text, ForeignKey, Enum
+from sqlalchemy import Integer, Float, Text, ForeignKey, Enum, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from datetime import datetime
 from typing import List
 
 from enum import Enum as PyEnum
@@ -19,8 +20,12 @@ class Question(Base):
     question_type: Mapped[QuestionType] = mapped_column(Enum(QuestionType), nullable=False)
     order_index: Mapped[int] = mapped_column(Integer, nullable=False)
     points: Mapped[float] = mapped_column(Float, nullable=False, default=1.0)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
-    test: Mapped["Test"] = relationship("Test", back_populates="questions")
+    test: Mapped["Test"] = relationship(
+        "Test", back_populates="questions"
+        )
     options: Mapped[List["AnswerOption"]] = relationship(
         "AnswerOption", back_populates="question", cascade="all, delete-orphan"
     )

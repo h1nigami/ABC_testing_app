@@ -17,6 +17,8 @@ class TestAttempt(Base):
     started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
     finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
     score: Mapped[Optional[float]] = mapped_column(Float)
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(), onupdate=datetime.now())
 
     test: Mapped["Test"] = relationship("Test", back_populates="attempts")
     user: Mapped["User"] = relationship("User", back_populates="test_attempts")

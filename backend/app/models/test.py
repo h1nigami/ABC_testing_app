@@ -16,9 +16,9 @@ class Test(Base):
     description: Mapped[Optional[str]] = mapped_column(Text)
     created_by: Mapped[int] = mapped_column(ForeignKey("user.Id"), nullable=False)
     is_published: Mapped[bool] = mapped_column(Boolean, default=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     updated_at: Mapped[datetime] = mapped_column(
-        DateTime, default=datetime.now(), onupdate=datetime.now()
+        DateTime, default=datetime.now, onupdate=datetime.now
     )
 
     creator: Mapped["User"] = relationship("User", back_populates="created_tests")

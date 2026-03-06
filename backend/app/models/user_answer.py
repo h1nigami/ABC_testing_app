@@ -1,6 +1,8 @@
 from ..core.database import Base
 
-from sqlalchemy import Integer, ForeignKey
+from datetime import datetime
+
+from sqlalchemy import Integer, ForeignKey, DateTime
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 class UserAnswer(Base):
@@ -12,6 +14,8 @@ class UserAnswer(Base):
     selected_option_Id: Mapped[int] = mapped_column(
         ForeignKey("answer_option.Id"), nullable=False
     )
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
     attempt: Mapped["TestAttempt"] = relationship("TestAttempt", back_populates="user_answers")
     question: Mapped["Question"] = relationship("Question", back_populates="user_answers")

@@ -1,7 +1,9 @@
 import pytest
-from app.repositories import GroupRepository, UserRepository
+from app.repositories import GroupRepository, UserRepository, TestRepository, QuestionRepository
 from app.models import User, Group
 from typing import List
+
+import uuid
 
 pytestmark = pytest.mark.asyncio
 
@@ -26,3 +28,14 @@ async def test_list_student_in_group(session):
     students = await repo.list_students(group=group)
     assert len(students) > 0
     assert students[0].Id == student.Id
+
+async def test_get_awailable_tests(session):
+    test_repo = TestRepository(session=session)
+    question_repo = QuestionRepository(session=session)
+    group_repo = GroupRepository(session=session)
+    user_repo = UserRepository(session=session)
+    user = await user_repo.create(login="test11",password="test11")
+    group = await group_repo.create(name="группа1")
+    await group_repo.save()
+    test = await test_repo.create(title="тест1")
+    question = await question_repo.create(test_Id=test.Id, text="ответ1")

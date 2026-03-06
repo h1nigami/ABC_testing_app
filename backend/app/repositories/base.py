@@ -19,10 +19,13 @@ class BaseRepository(Generic[ModelType]):
     async def delete(self, Id: int) -> None:
         await self._session.execute(sql_delete(self._model).where(self._model.Id == Id))
 
-    async def update(self, Id: int, **kwargs) -> ModelType:
+    async def update(self, Id: int, **kwargs) -> bool:
         stmt = sql_update(self._model).where(self._model.Id == Id).values(**kwargs)
-        await self._session.execute(stmt)
-        return await self.get(Id)
+        try:
+            await self._session.execute(stmt)
+            return True
+        except Exception:
+            return False
     
     async def list(self) -> List[ModelType]:
         result = await self._session.execute(select(self._model))
