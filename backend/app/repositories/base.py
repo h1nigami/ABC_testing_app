@@ -35,6 +35,11 @@ class BaseRepository(Generic[ModelType]):
         result = await self._session.execute(select(self._model).where(self._model.Id == Id))
         return result.scalars().first()
     
+    async def get_by(self, **kwargs) -> Optional[List[ModelType]]:
+        query = select(self._model).where(**kwargs)
+        result = await self._session.execute(query)
+        return result.scalars().all()
+    
     async def to_dict(self, model: ModelType) -> Dict[str, Any]:
         """Преобразование модели в словарь"""
         return {c.key: getattr(model, c.key) for c in class_mapper(model.__class__).mapped_table.c}
