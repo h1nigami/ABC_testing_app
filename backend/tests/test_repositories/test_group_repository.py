@@ -37,5 +37,5 @@ async def test_get_awailable_tests(session):
     user = await user_repo.create(login="test11",password="test11")
     group = await group_repo.create(name="группа1")
     await group_repo.save()
-    test = await test_repo.create(title="тест1")
-    question = await question_repo.create(test_Id=test.Id, text="ответ1")
+    test = await test_repo.create(title="тест1", created_by=user.Id)
+    question = await question_repo.create(test_Id=test.Id, text="ответ1", question_type="single_choice", order_index=1, points=1.0)
