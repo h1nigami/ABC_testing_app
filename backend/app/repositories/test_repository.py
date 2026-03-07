@@ -3,7 +3,7 @@ from app.models import Test, Question
 
 from typing import List
 
-from sqlalchemy import select
+from sqlalchemy import select, update as sql_update
 from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -26,6 +26,14 @@ class TestRepository(BaseRepository[Test]):
     
     async def get_all_published(self) -> List[Test]:
         query = select(self._model).where(self._model.is_published == True)
+        result = await self._session.execute(query)
+        return result.scalars().all()
+    
+    async def add_question(self, test: Test ,question: Question):
+        await super().update(question.Id, test_id=test.Id)
+
+    async def get_questions(self, test: Test) -> list[Question]:
+        query = select(Question).where(Question.test_Id == test.Id)
         result = await self._session.execute(query)
         return result.scalars().all()
     
