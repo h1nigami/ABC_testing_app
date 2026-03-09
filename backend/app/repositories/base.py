@@ -19,10 +19,13 @@ class BaseRepository(Generic[ModelType]):
     async def delete(self, Id: int) -> None:
         await self._session.execute(sql_delete(self._model).where(self._model.Id == Id))
 
-    async def update(self, Id: int, **kwargs) -> ModelType:
+    async def update(self, Id: int, **kwargs) -> bool:
         stmt = sql_update(self._model).where(self._model.Id == Id).values(**kwargs)
-        await self._session.execute(stmt)
-        return await self.get(Id)
+        try:
+            await self._session.execute(stmt)
+            return True
+        except Exception:
+            return False
     
     async def list(self) -> List[ModelType]:
         result = await self._session.execute(select(self._model))
@@ -31,6 +34,11 @@ class BaseRepository(Generic[ModelType]):
     async def get(self, Id: int) -> Optional[ModelType]:
         result = await self._session.execute(select(self._model).where(self._model.Id == Id))
         return result.scalars().first()
+    
+    async def get_by(self, **kwargs) -> Optional[List[ModelType]]:
+        query = select(self._model).where(**kwargs)
+        result = await self._session.execute(query)
+        return result.scalars().all()
     
     async def to_dict(self, model: ModelType) -> Dict[str, Any]:
         """Преобразование модели в словарь"""

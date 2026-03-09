@@ -1,2 +1,7 @@
 from .group_repository import GroupRepository
 from .user_repository import UserRepository
+from .answer_option_repository import AnswerOptionRepository
+from .test_repository import TestRepository
+from .test_attemtp_repository import TestAttemptRepository
+from .question_repository import QuestionRepository
+from .user_answer_repository import UserAnswerRepository
