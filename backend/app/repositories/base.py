@@ -14,6 +14,7 @@ class BaseRepository(Generic[ModelType]):
     async def create(self, **kwargs) -> ModelType:
         instance = self._model(**kwargs)
         self._session.add(instance)
+        await self._session.flush()
         return instance
     
     async def delete(self, Id: int) -> None:

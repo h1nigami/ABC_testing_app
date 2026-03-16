@@ -5,7 +5,7 @@ from datetime import datetime
 class AnswerOptionBase(BaseModel):
     text: str = Field(..., min_length=1, max_length=255)
     is_correct: bool = Field(..., description="Is this answer correct?")
-    order_index: int = Field(..., description="Order index of the answer option", default=0)
+    order_index: int = Field(..., description="Order index of the answer option")
 
 class AnswerOptionCreate(AnswerOptionBase):
     pass    
@@ -13,7 +13,7 @@ class AnswerOptionCreate(AnswerOptionBase):
 class AnswerOptionUpdate(BaseModel):
     text: Optional[str] = Field(None, min_length=1, max_length=255)
     is_correct: Optional[bool] = Field(None, description="Is this answer correct?")
-    order_index: Optional[int] = Field(None, description="Order index of the answer option", default=0)
+    order_index: Optional[int] = Field(None, description="Order index of the answer option")
 
 class AnswerOptionResponse(AnswerOptionBase):
     Id: int

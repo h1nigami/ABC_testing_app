@@ -3,12 +3,16 @@ from typing import Optional
 from datetime import datetime
 
 class TestAttemptBase(BaseModel):
+    __test__ = False
+
     test_id: int
 
 class TestAttemptCreate(TestAttemptBase):
     pass
 
 class TestAttemptUpdate(BaseModel):
+    __test__ = False
+
     finished_at: Optional[datetime] = None
     score: Optional[float] = None
 

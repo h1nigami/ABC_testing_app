@@ -4,6 +4,8 @@ from datetime import datetime
 from .question import QuestionResponse, QuestionCreate
 
 class TestBase(BaseModel):
+    __test__ = False
+
     title: str = Field(..., min_length=1 ,max_length=255)
     description: Optional[str] = Field(None, max_length=255)
     is_published: bool = False
