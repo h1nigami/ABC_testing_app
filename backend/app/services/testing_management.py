@@ -15,7 +15,6 @@ class TestManagementService:
     async def create_test_with_question(self, test_data: TestCreate, question_data: list[QuestionCreate], author_id: int):
         """Создаёт тест, все его вопросы и варианты ответов в одной транзакции"""
         test = await self._test_repository.create(**test_data.model_dump(), created_by=author_id)
-        print(test.Id)
         try:
             for question_d in question_data:
                 print(f"Question data before: {question_d.model_dump()}")
