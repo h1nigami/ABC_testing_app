@@ -44,6 +44,17 @@ class TestRepository(BaseRepository[Test]):
         result = await self._session.execute(query)
         return result.scalars().first()
 
+    async def get_by_author(self, author_id: int) -> List[Test]:
+        """Все тесты автора, включая неопубликованные черновики."""
+        query = (
+            select(self._model)
+            .where(self._model.created_by == author_id)
+            .order_by(self._model.created_at.desc())
+            .options(selectinload(self._model.questions).selectinload(Question.options))
+        )
+        result = await self._session.execute(query)
+        return result.scalars().all()
+
     async def add_question(self, test: Test ,question: Question):
         await super().update(question.Id, test_id=test.Id)
 

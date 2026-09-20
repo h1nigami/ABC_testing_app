@@ -179,6 +179,24 @@ async def test_update_and_delete_test(client: AsyncClient):
     assert resp.status_code == 404
 
 
+async def test_list_author_tests_includes_drafts(client: AsyncClient):
+    teacher = await _register(client, role="teacher")
+    body = {"test_data": {"title": "Draft test", "description": None}, "questions": []}
+    resp = await client.post(f"/api/test/create?author_id={teacher['Id']}", json=body)
+    assert resp.status_code == 201
+    draft_id = resp.json()["Id"]
+
+    # черновик не виден в списке опубликованных
+    resp = await client.get("/api/test/")
+    assert all(t["Id"] != draft_id for t in resp.json())
+
+    # но виден в списке тестов автора
+    resp = await client.get(f"/api/test/by-author/{teacher['Id']}")
+    assert resp.status_code == 200
+    ids = [t["Id"] for t in resp.json()]
+    assert draft_id in ids
+
+
 async def test_group_management(client: AsyncClient):
     student = await _register(client, role="student")
 

@@ -59,3 +59,7 @@ class TestManagementService:
     async def list_published_tests(self):
         """Список опубликованных тестов"""
         return await self._test_repository.get_all_published()
+
+    async def list_author_tests(self, author_id: int):
+        """Список всех тестов автора (включая черновики)"""
+        return await self._test_repository.get_by_author(author_id)

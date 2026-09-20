@@ -35,6 +35,15 @@ async def list_published_tests(db: AsyncSession = Depends(get_db)):
     return [TestResponse.model_validate(t) for t in tests]
 
 
+@qwiz_router.get(path="/by-author/{author_id}", response_model=list[TestResponse])
+async def list_author_tests(author_id: int, db: AsyncSession = Depends(get_db)):
+    """Все тесты автора, включая неопубликованные черновики."""
+    factory = ServiceFactory(session=db)
+    service = factory.get_management_service()
+    tests = await service.list_author_tests(author_id)
+    return [TestResponse.model_validate(t) for t in tests]
+
+
 @qwiz_router.get(path="/{test_id}", response_model=TestResponse)
 async def get_test(test_id: int, db: AsyncSession = Depends(get_db)):
     factory = ServiceFactory(session=db)
