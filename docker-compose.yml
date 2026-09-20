@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    environment:
+      DSN: sqlite+aiosqlite:///./data/app.db
+    volumes:
+      - backend-data:/app/data
+    # Порт наружу НЕ публикуется — бэкенд доступен только реверс-прокси
+    # внутри docker-сети.
+    expose:
+      - "8000"
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').getcode()==200 else 1)",
+        ]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  proxy:
+    build:
+      context: .
+      dockerfile: deploy/nginx/Dockerfile
+    depends_on:
+      backend:
+        condition: service_healthy
+    # По умолчанию слушаем на всех интерфейсах, но nginx пускает только
+    # клиентов из локальной сети (см. deploy/nginx/nginx.conf).
+    # Чтобы жёстко привязаться к конкретному LAN-интерфейсу, задайте
+    # BIND_HOST, например: BIND_HOST=192.168.1.50 docker compose up -d
+    ports:
+      - "${BIND_HOST:-0.0.0.0}:${HTTP_PORT:-80}:80"
+    restart: unless-stopped
+
+volumes:
+  backend-data:
