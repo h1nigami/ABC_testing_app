@@ -16,3 +16,5 @@ class GroupResponse(GroupBase):
     awailable_tests: Optional[int] = None
     created_at: datetime
     updated_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

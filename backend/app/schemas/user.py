@@ -10,14 +10,18 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, max_length=32)
 
+class UserLogin(BaseModel):
+    login: str = Field(..., min_length=6, max_length=32)
+    password: str = Field(..., min_length=8, max_length=32)
+
 class UserUpdate(BaseModel):
-    login: Optional[str] = Field(..., min_length=6, max_length=32)
-    password: Optional[str] = Field(..., min_length=8, max_length=32)
+    login: Optional[str] = Field(None, min_length=6, max_length=32)
+    password: Optional[str] = Field(None, min_length=8, max_length=32)
     role: Optional[str] = None
     group_id: Optional[int] = None
 
 class UserResponse(UserBase):
-    id: int
+    Id: int
     created_at: datetime
     updated_at: datetime
 

@@ -19,7 +19,7 @@ class TestAttemptUpdate(BaseModel):
 class TestAttemptResponse(TestAttemptBase):
     Id: int
     user_id: int
-    started_at: int
+    started_at: datetime
     finished_at: Optional[datetime] = None
     score: Optional[float] = None
 

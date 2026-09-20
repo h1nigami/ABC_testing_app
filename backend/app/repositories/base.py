@@ -36,8 +36,8 @@ class BaseRepository(Generic[ModelType]):
         result = await self._session.execute(select(self._model).where(self._model.Id == Id))
         return result.scalars().first()
     
-    async def get_by(self, **kwargs) -> Optional[List[ModelType]]:
-        query = select(self._model).where(**kwargs)
+    async def get_by(self, **kwargs) -> List[ModelType]:
+        query = select(self._model).filter_by(**kwargs)
         result = await self._session.execute(query)
         return result.scalars().all()
     

@@ -14,11 +14,11 @@ class TestAttempt(Base):
     Id: Mapped[int] = mapped_column(Integer, primary_key=True)
     test_id: Mapped[int] = mapped_column(ForeignKey("test.Id"), nullable=False)
     user_id: Mapped[int] = mapped_column(ForeignKey("user.Id"), nullable=False)
-    started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
+    started_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
     finished_at: Mapped[Optional[datetime]] = mapped_column(DateTime)
     score: Mapped[Optional[float]] = mapped_column(Float)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now())
-    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now(), onupdate=datetime.now())
+    created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.now, onupdate=datetime.now)
 
     test: Mapped["Test"] = relationship("Test", back_populates="attempts")
     user: Mapped["User"] = relationship("User", back_populates="test_attempts")
@@ -27,4 +27,4 @@ class TestAttempt(Base):
     )
 
     def __repr__(self):
-        return f"<TestAttempt(id={self.id}, user_id={self.user_id}, test_id={self.test_id})>"
+        return f"<TestAttempt(Id={self.Id}, user_id={self.user_id}, test_id={self.test_id})>"
